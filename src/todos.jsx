@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import { Form } from 'react-bootstrap';
 import * as ACTIONS from './actions';
+import TodoList from './todoList';
 
 class Todos extends Component {
     constructor(props){
@@ -33,7 +34,7 @@ class Todos extends Component {
         this.props.deleteTodo(element);
     }
 
-    checkboxHandler(ev, editing){
+    checkboxHandler = (ev, editing) => {
         let classNames = {...this.state.classNames};
         for(let key in classNames){
             if(classNames[key] === "editing"){
@@ -47,13 +48,13 @@ class Todos extends Component {
         else if(classNames[ev] !== "done"){
             classNames[ev] = "done";
         }
-        else{
+        else {
             classNames[ev] = "";
         }
         this.setState({classNames});
     }
 
-    selection(){
+    selection() {
         if(this.props.todos.length){
             return <Form.Check type="checkbox" id="toggle-all" label="Mark all as complete" />;
         }
@@ -74,13 +75,14 @@ class Todos extends Component {
                     <ul id="todo-list">
                         {this.props.todos.length !== 0 && this.props.todos.map((todo, key) => {
                             return (
-                                <li key={key} className={this.state.classNames[todo]}>
-                                    <div className="view" onDoubleClick={() => {this.checkboxHandler(todo, true)}}>
-                                        <Form.Check type="checkbox" id={todo} className="toggle" onChange={() => {this.checkboxHandler(todo)}} label={todo} />
-                                        <button className="destroy" onClick={() => this.click(todo)}></button>
-                                    </div>
-                                    <input className="edit" type="text" value={todo} />
-                                </li>
+                                <TodoList 
+                                   propKey={key}
+                                   key={key}
+                                   todo={todo}
+                                   {...this.state}
+                                   checkboxHandler={this.checkboxHandler} 
+                                   click={this.click}
+                                />
                             );
                         })}
                     </ul>
