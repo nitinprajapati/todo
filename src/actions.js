@@ -12,9 +12,17 @@ export const Delete_Todo =  (todo) => {
     }  
 }
 
-export const Select_All_Todo =  () => {
+export const Select_All_Todo =  (element) => {
     return {
-        type: 'SELECT_ALL_TODO'
+        type: 'SELECT_ALL_TODO',
+        payload: element
+    }
+}
+
+export const Select_Todo =  (element) => {
+    return {
+        type: 'SELECT_TODO',
+        payload: element
     }
 }
 

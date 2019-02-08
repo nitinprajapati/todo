@@ -1,14 +1,14 @@
 import React from 'react';
 import { Form } from 'react-bootstrap';
 
-const TodoList = ({propKey, classNames, todo, checkboxHandler, click}) => {
+const TodoList = ({propKey, className, todoName, todoChecked, checkboxHandler, click}) => {
     return(
-        <li key={propKey} className={classNames[todo]}>
-            <div className="view" onDoubleClick={() => {checkboxHandler(todo, true)}}>
-                <Form.Check type="checkbox" id={todo} className="toggle" onChange={() => {checkboxHandler(todo)}} label={todo} />
-                <button className="destroy" onClick={() => click(todo)}></button>
+        <li key={propKey} className={className}>
+            <div className="view">
+                <Form.Check type="checkbox" checked={todoChecked} id={todoName} className="toggle" onChange={(event) => {checkboxHandler(event, todoName)}} label={todoName} />
+                <button className="destroy" onClick={() => click(todoName)}></button>
             </div>
-            <input className="edit" type="text" value={todo} />
+            <input className="edit" type="text" defaultValue={todoName} />
         </li>
     )
 }

@@ -34,29 +34,18 @@ class Todos extends Component {
         this.props.deleteTodo(element);
     }
 
-    checkboxHandler = (ev, editing) => {
-        let classNames = {...this.state.classNames};
-        for(let key in classNames){
-            if(classNames[key] === "editing"){
-                classNames[key] = "";
-            }
-        }
+    selectAll = (event) => {
+        this.props.selectAll(event);
+    }
 
-        if(editing === true){
-            classNames[ev] = "editing";
-        }
-        else if(classNames[ev] !== "done"){
-            classNames[ev] = "done";
-        }
-        else {
-            classNames[ev] = "";
-        }
-        this.setState({classNames});
+    checkboxHandler = (event) => {
+        this.props.selectTodo(event)
     }
 
     selection() {
+        let checked = this.props.checkboxCount === this.props.todos.length ? true : false;
         if(this.props.todos.length){
-            return <Form.Check type="checkbox" id="toggle-all" label="Mark all as complete" />;
+            return <Form.Check type="checkbox" id="toggle-all" label="Mark all as complete" onChange={this.selectAll} checked={checked} />;
         }
         else {
             return null;
@@ -68,7 +57,14 @@ class Todos extends Component {
             <React.Fragment>
                 <header>
                     <h1>Todos</h1>
-                    <input id="new-todo" type="text" onChange={this.onChange} defaultValue={this.state.input} onKeyPress={this.handleEnter} placeholder="What needs to be done?" />
+                    <input 
+                        id="new-todo" 
+                        type="text" 
+                        onChange={this.onChange} 
+                        value={this.state.input} 
+                        onKeyPress={this.handleEnter} 
+                        placeholder="What needs to be done?" 
+                    />
                 </header>
                 <section>
                     {this.selection()}
@@ -78,8 +74,9 @@ class Todos extends Component {
                                 <TodoList 
                                    propKey={key}
                                    key={key}
-                                   todo={todo}
-                                   {...this.state}
+                                   todoName={todo.name}
+                                   todoChecked={todo.checked}
+                                   className={todo.class}
                                    checkboxHandler={this.checkboxHandler} 
                                    click={this.click}
                                 />
@@ -97,7 +94,8 @@ class Todos extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        todos: state.todo.todos
+        todos: state.todo.todos,
+        checkboxCount: state.todo.checkboxCount
     }
 }
 
@@ -106,7 +104,8 @@ const mapDispatchToProps = (dispatch) => {
         addTodo: ACTIONS.Add_Todo,
         deleteTodo: ACTIONS.Delete_Todo,
         selectAll: ACTIONS.Select_All_Todo,
-        getTodos: ACTIONS.getTodos
+        getTodos: ACTIONS.getTodos,
+        selectTodo: ACTIONS.Select_Todo
     }, dispatch);
 }
 
