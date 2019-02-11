@@ -5,15 +5,34 @@ const initialState = {
     checkboxCount: 0
 };
 
+const CHECK_EXISTING_TODO = (json, action) => {
+    let postion = -1;
+    for(let i=0; i<json.length; i++){
+        if (json[i].name === action.payload) {
+            postion = json[i];
+            postion.index = i;
+            break;
+        }
+    }
+    return postion;
+}
+
 const ADD_TODO = (state, action) => {
     let savedItems = [];
     let todos = window.localStorage.getItem("Todos");
     if(todos){
         savedItems = JSON.parse(todos);
-        savedItems.push({name: action.payload, checked:false, class: ''});
+        let existingTodo = CHECK_EXISTING_TODO(savedItems, action);
+        if(existingTodo !== -1){
+            savedItems.splice(existingTodo.index, 1);
+            savedItems.push({name: action.payload, checked:existingTodo.checked, className: existingTodo.className, createdAt: existingTodo.createdAt, updatedAt: new Date().getTime()});
+        }
+        else {
+            savedItems.push({name: action.payload, checked:false, className: '', createdAt: new Date()});
+        }
     }
     else {
-        savedItems.push({name: action.payload, checked:false, class: ''});
+        savedItems.push({name: action.payload, checked:false, className: '', createdAt: new Date()});
     }
 
     window.localStorage.setItem("Todos", JSON.stringify(savedItems));
@@ -62,7 +81,7 @@ const SELECT_TODO = (state, action) => {
     for(let i=0; i<json.length; i++){
         if (json[i].name === action.payload.target.nextElementSibling.innerText) {
             json[i].checked = checked;
-            json[i].class = className;
+            json[i].className = className;
             break;
         }
     }
@@ -89,7 +108,7 @@ const SELECT_ALL_TODO = (state, action) => {
         return {
             checked: checked,
             name: todo.name,
-            class: className
+            className: className
         }
     });
     window.localStorage.setItem("Todos", JSON.stringify(checkedArray));
@@ -118,6 +137,25 @@ const GET_ALL_TODO = (state) => {
     };
 }
 
+const CLEAR_COMPLETED_TASK = (state) => {
+    let todos = window.localStorage.getItem("Todos");
+    let json = JSON.parse(todos);
+    let newArr = [];
+    for(let i=0; i<json.length; i++){
+        if (json[i].className !== 'done') {
+            newArr.push(json[i]);
+        }
+    }
+    window.localStorage.setItem("Todos", JSON.stringify(newArr));
+    window.localStorage.setItem("TodosCount", newArr.length);
+   
+    return {
+        ...state,
+        todos: newArr,
+        checkboxCount: parseInt(newArr.length)
+    };
+}
+
 export default (state=initialState, action) => {
     switch(action.type){
         case "ADD_TODO" : state = ADD_TODO(state, action); break;
@@ -125,6 +163,7 @@ export default (state=initialState, action) => {
         case "SELECT_ALL_TODO" : state = SELECT_ALL_TODO(state, action); break;
         case "GET_ALL_TODOS" : state = GET_ALL_TODO(state); break;
         case "SELECT_TODO" : state = SELECT_TODO(state, action); break;
+        case "CLEAR_COMPLETED_TASK" : state = CLEAR_COMPLETED_TASK(state); break;
         default: 
     }
     return state;

@@ -1,17 +1,15 @@
-html,
-body {
+html {
 	margin: 0;
 	padding: 0;
 }
 
 body {
 	font: 14px "Helvetica Neue", Helvetica, Arial, sans-serif;
-	line-height: 1.4em;
 	background: #eeeeee;
-	color: #333333;
 	width: 520px;
-	margin: 0 auto;
 	-webkit-font-smoothing: antialiased;
+    margin: 0 auto !important;
+	padding: 0;
 }
 
 #todoapp {
@@ -61,7 +59,6 @@ body {
     }
 
     footer {
-        display: none;
         margin: 0 -20px -20px -20px;
         overflow: hidden;
         color: #555555;
@@ -85,14 +82,35 @@ body {
     li {
         padding: 18px 20px 18px 0;
         position: relative;
-        font-size: 24px;
         border-bottom: 1px solid #cccccc;
+
+        .view label {
+            word-break: break-word;
+            font-size: small;
+            vertical-align: super;
+        }
+
+        .editing {
+            border-bottom: none;
+            margin-top: -1px;
+            padding: 0;
+        }
+
+        &:last-child {
+            border-bottom: none;
+        }
+
+        &.done label {
+            color: #777777;
+            text-decoration: line-through;
+        }
+
+        &:hover .destroy {
+            display: block;
+            border: none;
+        }
     }
 
-    li:last-child {
-        border-bottom: none;
-    }
-    
     .destroy {
         position: absolute;
         right: 5px;
@@ -102,48 +120,19 @@ body {
         width: 20px;
         height: 20px;
         background: url(img/destroy.png) no-repeat;
+
+        &:hover{
+            background-position: 0 -20px;
+        }
+
+        &:last-child{
+            margin-bottom: -1px;  
+        }
     }
-}
-
-
-#todo-list li.done label {
-	color: #777777;
-	text-decoration: line-through;
-}
-
-
-#todo-list li:hover .destroy {
-  	display: block;
-    border: none;
-}
-
-#todo-list .destroy:hover {
-  	background-position: 0 -20px;
-}
-
-#todo-list li.editing {
-	border-bottom: none;
-	margin-top: -1px;
-	padding: 0;
-}
-
-#todo-list li.editing:last-child {
-	margin-bottom: -1px;
-}
-
-#todo-list li.editing .edit {
-	display: block;
-	width: 444px;
-	padding: 13px 15px 14px 20px;
-	margin: 0;
 }
 
 #todo-list li.editing .view {
 	display: none;
-}
-
-#todo-list li .view label {
-	word-break: break-word;
 }
 
 #todo-list li .edit {
@@ -152,33 +141,18 @@ body {
 
 #clear-completed {
 	float: right;
-	line-height: 20px;
-	text-decoration: none;
-	background: rgba(0, 0, 0, 0.1);
-	color: #555555;
-	font-size: 11px;
-	margin-top: 8px;
-	margin-bottom: 8px;
-	padding: 0 10px 1px;
-	cursor: pointer;
-	-webkit-border-radius: 12px;
-	-moz-border-radius: 12px;
-	-ms-border-radius: 12px;
-	-o-border-radius: 12px;
-	border-radius: 12px;
-	-webkit-box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 0 0;
-	-moz-box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 0 0;
-	-ms-box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 0 0;
-	-o-box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 0 0;
-	box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 0 0;
-
+    line-height: 20px;
+    color: #555555;
+    font-size: 11px;
+    margin-top: 8px;
+    padding: 0 10px 1px;
+    cursor: pointer;
+    border-radius: 12px;
+    -ms-box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 0 0;
+    -o-box-shadow: rgba(0, 0, 0, 0.2) 0 -1px 0 0;
+    border: 0;    
     &:hover {
         background: rgba(0, 0, 0, 0.15);
-        -webkit-box-shadow: rgba(0, 0, 0, 0.3) 0 -1px 0 0;
-        -moz-box-shadow: rgba(0, 0, 0, 0.3) 0 -1px 0 0;
-        -ms-box-shadow: rgba(0, 0, 0, 0.3) 0 -1px 0 0;
-        -o-box-shadow: rgba(0, 0, 0, 0.3) 0 -1px 0 0;
-        box-shadow: rgba(0, 0, 0, 0.3) 0 -1px 0 0;
     }
 
     &:active {
@@ -214,6 +188,24 @@ body {
     }
 }
 
-input[type="checkbox" i] {
-    margin: 3px 3px 3px 4px;
+
+.timings{
+    font-size: 11px;
+    padding: 0px 0 0px 20px;
+    color: cornflowerblue;
+    font-weight: bold;
+    cursor: pointer;
+
+    &.updatedAt{
+        padding: 0px 0 0px 5px;
+
+        &:before{
+            content: '/ '
+        }
+    }
+
+}
+
+.markAll {
+    margin-top: 5px;
 }

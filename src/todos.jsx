@@ -9,8 +9,7 @@ class Todos extends Component {
     constructor(props){
         super(props);
         this.state = {
-            input : "",
-            classNames : []
+            input : ""
         }
     }
     
@@ -24,7 +23,7 @@ class Todos extends Component {
 
     handleEnter = (ev) => {
         const keycode = (ev.keyCode ? ev.keyCode : ev.which);
-        if (keycode === 13) {
+        if (keycode === 13 && ev.currentTarget.value.trim() !== "") {
             this.props.addTodo(ev.target.value);
             this.setState({input: ''});
         }
@@ -43,12 +42,54 @@ class Todos extends Component {
     }
 
     selection() {
-        let checked = this.props.checkboxCount === this.props.todos.length ? true : false;
+        let leftCount = 0;
+
+        for(let i=0; i<this.props.todos.length; i++){
+            if (this.props.todos[i].className === "done") {
+                leftCount += 1;
+            }
+        }
+        let checked = leftCount === this.props.todos.length && this.props.checkboxCount !== 0 ? true : false;
         if(this.props.todos.length){
-            return <Form.Check type="checkbox" id="toggle-all" label="Mark all as complete" onChange={this.selectAll} checked={checked} />;
+            return  (
+                <React.Fragment>
+                    <Form.Check type="checkbox" id="toggle-all" className="markAll" label="Mark all as complete" onChange={this.selectAll} checked={checked} />
+                    <hr />
+                </React.Fragment>
+            );
         }
         else {
             return null;
+        }
+    }
+
+    clearCompletedTask = () => {
+        this.props.clearCompletedTask();
+    }
+
+    leftItem() {
+        let leftCount = 0;
+
+        if(this.props.todos.length){
+
+            for(let i=0; i<this.props.todos.length; i++){
+                if (this.props.todos[i].className === "done") {
+                    leftCount += 1;
+                }
+            }
+
+            let leftTasks = this.props.todos.length-leftCount;
+            let clearText =  <button id="clear-completed" onClick={this.clearCompletedTask}>Clear {leftCount} completed items</button>;
+            if(leftCount === 0){
+                clearText = '';
+            }
+
+            return (
+                <React.Fragment>
+                    {clearText}
+                    <div className="todo-count"><b>{leftTasks}</b> items left</div>
+                </React.Fragment>
+            );
         }
     }
 
@@ -74,9 +115,7 @@ class Todos extends Component {
                                 <TodoList 
                                    propKey={key}
                                    key={key}
-                                   todoName={todo.name}
-                                   todoChecked={todo.checked}
-                                   className={todo.class}
+                                   {...todo}
                                    checkboxHandler={this.checkboxHandler} 
                                    click={this.click}
                                 />
@@ -85,7 +124,7 @@ class Todos extends Component {
                     </ul>
                 </section>
                 <footer>
-
+                    {this.leftItem()}
                 </footer>
             </React.Fragment>
         );
@@ -105,7 +144,8 @@ const mapDispatchToProps = (dispatch) => {
         deleteTodo: ACTIONS.Delete_Todo,
         selectAll: ACTIONS.Select_All_Todo,
         getTodos: ACTIONS.getTodos,
-        selectTodo: ACTIONS.Select_Todo
+        selectTodo: ACTIONS.Select_Todo,
+        clearCompletedTask: ACTIONS.CLEAR_COMPLETED_TASK
     }, dispatch);
 }
 

@@ -31,3 +31,9 @@ export const getTodos = () => {
         type: 'GET_ALL_TODOS'
     }
 }
+
+export const CLEAR_COMPLETED_TASK =  () => {
+    return {
+        type: 'CLEAR_COMPLETED_TASK'
+    }
+}
