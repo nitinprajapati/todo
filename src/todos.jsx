@@ -67,6 +67,8 @@ class Todos extends Component {
         this.props.clearCompletedTask();
     }
 
+    edit = text => this.setState({input: text});
+
     leftItem() {
         let leftCount = 0;
 
@@ -98,14 +100,14 @@ class Todos extends Component {
             <React.Fragment>
                 <header>
                     <h1>Todos</h1>
-                    <input 
+                    <textarea 
                         id="new-todo" 
                         type="text" 
                         onChange={this.onChange} 
                         value={this.state.input} 
                         onKeyPress={this.handleEnter} 
                         placeholder="What needs to be done?" 
-                    />
+                    ></textarea>
                 </header>
                 <section>
                     {this.selection()}
@@ -118,6 +120,7 @@ class Todos extends Component {
                                    {...todo}
                                    checkboxHandler={this.checkboxHandler} 
                                    click={this.click}
+                                   edit={this.edit}
                                 />
                             );
                         })}

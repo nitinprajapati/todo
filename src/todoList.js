@@ -3,7 +3,7 @@ import { Form } from 'react-bootstrap';
 import moment from 'moment';
 import {OverlayTrigger, Tooltip} from 'react-bootstrap';
 
-const TodoList = ({propKey, className, updatedAt, name, createdAt, checked, checkboxHandler, click}) => {
+const TodoList = ({propKey, className, updatedAt, edit, name, createdAt, checked, checkboxHandler, click}) => {
     let createdTime = moment(createdAt).format("Do MMM YYYY, h:mm:ss a");
     let updateTime = '';
     if(updatedAt){
@@ -19,9 +19,9 @@ const TodoList = ({propKey, className, updatedAt, name, createdAt, checked, chec
                     <span className="timings">{createdTime}</span>
                 </OverlayTrigger>
                 {updateTime}
+                <button className="editIcon" onClick={() => edit(name)}></button>
                 <button className="destroy" onClick={() => click(name)}></button>
             </div>
-            <input className="edit" type="text" defaultValue={name} />
         </li>
     )
 }
