@@ -28,11 +28,11 @@ const ADD_TODO = (state, action) => {
             savedItems.push({name: action.payload, checked:existingTodo.checked, className: existingTodo.className, createdAt: existingTodo.createdAt, updatedAt: new Date().getTime()});
         }
         else {
-            savedItems.push({name: action.payload, checked:false, className: '', createdAt: new Date()});
+            savedItems.push({name: action.payload, checked:false, className: '', createdAt: new Date().getTime()});
         }
     }
     else {
-        savedItems.push({name: action.payload, checked:false, className: '', createdAt: new Date()});
+        savedItems.push({name: action.payload, checked:false, className: '', createdAt: new Date().getTime()});
     }
 
     window.localStorage.setItem("Todos", JSON.stringify(savedItems));
@@ -105,10 +105,16 @@ const SELECT_ALL_TODO = (state, action) => {
         className = "done";
     }
     let checkedArray = state.todos.map((todo) => {
+        let updatedAt = '';
+        if(todo.updatedAt){
+            updatedAt = todo.updatedAt;
+        }
         return {
             checked: checked,
             name: todo.name,
-            className: className
+            className: className,
+            createdAt: todo.createdAt,
+            updatedAt
         }
     });
     window.localStorage.setItem("Todos", JSON.stringify(checkedArray));

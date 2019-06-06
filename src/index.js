@@ -5,12 +5,18 @@ import './index.scss';
 import {Provider} from 'react-redux';
 import { createStore } from "redux";
 import allReducer from './allReducers';
+import { composeWithDevTools } from 'redux-devtools-extension';
+
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import * as serviceWorker from './serviceWorker';
 
-const store = createStore(allReducer);
+const store = createStore(
+    allReducer,
+    composeWithDevTools()
+);
+
 ReactDOM.render(
     <Provider store={store}>
         <App />

@@ -108,7 +108,7 @@ body {
     .destroy {
         position: absolute;
         right: 5px;
-        top: 20px;
+        top: 25px;
         display: none;
         cursor: pointer;
         width: 20px;
@@ -222,17 +222,13 @@ section hr {
     margin: 0px;
 }
 
-header textarea {
+header input[type="text"] {
     width: 480px;
     font-size: 24px;
-    font-family: inherit;
+    height: 80px;
     line-height: 1.4em;
-    border: 0;
-    outline: none;
-    padding: 6px;
+    padding: 15px;
     border: 1px solid #999999;
-    -webkit-box-shadow: rgba(0, 0, 0, 0.2) 0 1px 2px 0 inset;
-    -moz-box-shadow: rgba(0, 0, 0, 0.2) 0 1px 2px 0 inset;
     -ms-box-shadow: rgba(0, 0, 0, 0.2) 0 1px 2px 0 inset;
     -o-box-shadow: rgba(0, 0, 0, 0.2) 0 1px 2px 0 inset;
     box-shadow: rgba(0, 0, 0, 0.2) 0 1px 2px 0 inset;

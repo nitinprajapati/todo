@@ -100,14 +100,14 @@ class Todos extends Component {
             <React.Fragment>
                 <header>
                     <h1>Todos</h1>
-                    <textarea 
+                    <input 
                         id="new-todo" 
                         type="text" 
                         onChange={this.onChange} 
                         value={this.state.input} 
                         onKeyPress={this.handleEnter} 
                         placeholder="What needs to be done?" 
-                    ></textarea>
+                    />
                 </header>
                 <section>
                     {this.selection()}
